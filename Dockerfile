@@ -5,6 +5,7 @@ FROM argoproj/argocd:v2.4.7
 # Dockerfile template based off https://itnext.io/argocd-a-helm-chart-deployment-and-working-with-helm-secrets-via-aws-kms-96509bfc5eb3
 
 ARG SOPS_VERSION="v3.7.3"
+ARG HELM_SECRETS_VERSION="3.14.0"
 
 USER root
 
@@ -31,6 +32,6 @@ ENV XDG_CONFIG_HOME=/home/argocd/.config
 COPY --from=ksops /go/bin/kustomize /usr/local/bin/kustomize
 COPY --from=ksops /go/src/github.com/viaduct-ai/kustomize-sops/* .config/kustomize/plugin/viaduct.ai/v1/ksops/
 
-RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version 3.14.0
+RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION}
 
 ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"
