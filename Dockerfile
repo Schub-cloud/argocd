@@ -1,10 +1,10 @@
-FROM viaductoss/ksops:v3.0.1 as ksops
+FROM viaductoss/ksops:v3.0.2 as ksops
 
-FROM argoproj/argocd:v2.3.0-rc4
+FROM argoproj/argocd:v2.4.7
 
 # Dockerfile template based off https://itnext.io/argocd-a-helm-chart-deployment-and-working-with-helm-secrets-via-aws-kms-96509bfc5eb3
 
-ARG SOPS_VERSION="v3.7.1"
+ARG SOPS_VERSION="v3.7.3"
 
 USER root
 
@@ -20,10 +20,8 @@ RUN apt-get update && \
     chmod +x /usr/local/bin/sops && \
     cd /usr/local/bin && \
     mv helm helm.bin && \
-    mv helm2 helm2.bin && \
     mv helm-wrapper.sh helm && \
-    ln helm helm2 && \
-    chmod +x helm helm2
+    chmod +x helm
 
 USER argocd
 
@@ -33,6 +31,6 @@ ENV XDG_CONFIG_HOME=/home/argocd/.config
 COPY --from=ksops /go/bin/kustomize /usr/local/bin/kustomize
 COPY --from=ksops /go/src/github.com/viaduct-ai/kustomize-sops/* .config/kustomize/plugin/viaduct.ai/v1/ksops/
 
-RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version 3.8.1
+RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version 3.14.0
 
 ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"
