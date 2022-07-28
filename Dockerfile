@@ -23,7 +23,8 @@ RUN apt-get update && \
     mv helm-wrapper.sh helm && \
     chmod +x helm
 
-USER argocd
+# Argo user
+USER 999
 
 ENV XDG_CONFIG_HOME=/home/argocd/.config
 
