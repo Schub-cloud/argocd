@@ -27,7 +27,7 @@ jobs:
           context: .
           tags: |
             ghcr.io/schub-cloud/argocd:latest
-            ghcr.io/schub-cloud/argocd:{{ github.ref_name }}
+            ghcr.io/schub-cloud/argocd:${{ github.ref_name }}
           push: true
           cache-from: type=registry,ref=ghcr.io/schub-cloud/argocd:buildcache
           cache-to: type=registry,ref=ghcr.io/schub-cloud/argocd:buildcache,mode=max
