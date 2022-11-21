@@ -1,6 +1,6 @@
 FROM viaductoss/ksops:v3.0.2 as ksops
 
-FROM argoproj/argocd:v2.4.7
+FROM argoproj/argocd:v2.5.2
 
 # Dockerfile template based off https://itnext.io/argocd-a-helm-chart-deployment-and-working-with-helm-secrets-via-aws-kms-96509bfc5eb3
 
