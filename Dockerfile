@@ -1,12 +1,12 @@
 FROM viaductoss/ksops:v3.0.2 as ksops
 
-FROM argoproj/argocd:v2.5.2
+FROM argoproj/argocd:v2.5.3
 
 # Dockerfile template based off https://itnext.io/argocd-a-helm-chart-deployment-and-working-with-helm-secrets-via-aws-kms-96509bfc5eb3
 
 ARG SOPS_VERSION="v3.7.3"
 ARG GCS_PLUGIN_VERSION="0.3.22"
-ARG HELM_SECRETS_VERSION="3.14.0"
+ARG HELM_SECRETS_VERSION="4.2.2"
 
 USER root
 
