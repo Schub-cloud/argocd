@@ -27,3 +27,5 @@ COPY --from=ksops-builder /usr/local/bin/ksops /usr/local/bin/ksops
 USER $ARGOCD_USER_ID
 
 RUN helm plugin install https://github.com/jkroepke/helm-secrets
+
+ENV XDG_CONFIG_HOME=/home/argocd/.config
