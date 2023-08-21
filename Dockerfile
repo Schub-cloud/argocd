@@ -1,6 +1,6 @@
 FROM viaductoss/ksops:v4.2.1 as ksops-builder
 
-FROM argoproj/argocd:v2.6.13
+FROM quay.io/argoproj/argocd:v2.8.0
 
 # Switch to root for the ability to perform install
 USER root
@@ -27,5 +27,3 @@ COPY --from=ksops-builder /usr/local/bin/ksops /usr/local/bin/ksops
 USER $ARGOCD_USER_ID
 
 RUN helm plugin install https://github.com/jkroepke/helm-secrets
-
-ENV XDG_CONFIG_HOME=/home/argocd/.config
