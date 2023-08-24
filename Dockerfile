@@ -37,5 +37,5 @@ COPY --from=ksops-builder /usr/local/bin/ksops .config/kustomize/plugin/viaduct.
 ########################
 # Install Helm Secrets #
 ########################
-RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets
 ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"
+RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets
