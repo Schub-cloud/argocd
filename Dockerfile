@@ -2,6 +2,9 @@ FROM viaductoss/ksops:v4.2.1 as ksops-builder
 
 FROM quay.io/argoproj/argocd:v2.8.0
 
+ARG SOPS_VERSION="v3.7.3"
+ARG HELM_SECRETS_VERSION="4.5.0"
+
 # Switch to root for the ability to perform install
 USER root
 
@@ -16,7 +19,7 @@ RUN apt-get update && \
         gpg && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/3.7.3/sops-3.7.3.linux && \
+    curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux && \
     chmod +x /usr/local/bin/sops &&\
     cd /usr/local/bin && \
     mv helm helm.bin && \
@@ -38,4 +41,4 @@ COPY --from=ksops-builder /usr/local/bin/ksops .config/kustomize/plugin/viaduct.
 # Install Helm Secrets #
 ########################
 ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"
-RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets
+RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION}
