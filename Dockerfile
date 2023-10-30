@@ -1,6 +1,6 @@
 FROM viaductoss/ksops:v4.2.1 as ksops-builder
 
-FROM quay.io/argoproj/argocd:v2.8.0
+FROM quay.io/argoproj/argocd:v2.8.5
 
 ARG SOPS_VERSION="v3.7.3"
 ARG HELM_SECRETS_VERSION="4.5.0"
