@@ -1,9 +1,9 @@
-FROM viaductoss/ksops:v4.2.1 as ksops-builder
+FROM viaductoss/ksops:v4.3.0 as ksops-builder
 
-FROM quay.io/argoproj/argocd:v2.8.0
+FROM quay.io/argoproj/argocd:v2.9.3
 
-ARG SOPS_VERSION="v3.7.3"
-ARG HELM_SECRETS_VERSION="4.5.0"
+ARG SOPS_VERSION="v3.8.1"
+ARG HELM_SECRETS_VERSION="4.5.1"
 
 # Switch to root for the ability to perform install
 USER root
@@ -19,7 +19,7 @@ RUN apt-get update && \
         gpg && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux && \
+    curl -o /usr/local/bin/sops -L https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux && \
     chmod +x /usr/local/bin/sops &&\
     cd /usr/local/bin && \
     mv helm helm.bin && \
