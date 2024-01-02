@@ -5,10 +5,15 @@ FROM quay.io/argoproj/argocd:v2.9.3
 ARG SOPS_VERSION="v3.8.1"
 ARG HELM_SECRETS_VERSION="4.5.1"
 
+ENV HELM_SECRETS_BACKEND="sops" \
+    HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/" \
+    HELM_SECRETS_HELM_PATH=/usr/local/bin/helm \
+    HELM_SECRETS_VALUES_ALLOW_SYMLINKS=false \
+    HELM_SECRETS_VALUES_ALLOW_ABSOLUTE_PATH=false \
+    HELM_SECRETS_VALUES_ALLOW_PATH_TRAVERSAL=false \
+    HELM_SECRETS_WRAPPER_ENABLED=false
 # Switch to root for the ability to perform install
 USER root
-
-COPY helm-wrapper.sh /usr/local/bin/
 
 # Install tools needed for your repo-server to retrieve & decrypt secrets, render manifests
 # (e.g. curl, awscli, gpg, sops)
@@ -18,13 +23,13 @@ RUN apt-get update && \
         awscli \
         gpg && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    curl -o /usr/local/bin/sops -L https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64 && \
-    chmod +x /usr/local/bin/sops &&\
-    cd /usr/local/bin && \
-    mv helm helm.bin && \
-    mv helm-wrapper.sh helm && \
-    chmod +x helm
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install sops
+RUN curl -o /usr/local/bin/sops -L https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64 && \
+    chmod +x /usr/local/bin/sops
+
+RUN ln -sf "$(helm env HELM_PLUGINS)/helm-secrets/scripts/wrapper/helm.sh" /usr/local/sbin/helm
 
 # Switch back to non-root user
 USER $ARGOCD_USER_ID
@@ -40,5 +45,4 @@ COPY --from=ksops-builder /usr/local/bin/ksops .config/kustomize/plugin/viaduct.
 ########################
 # Install Helm Secrets #
 ########################
-ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"
-RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION}
+RUN /usr/local/bin/helm plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION}
