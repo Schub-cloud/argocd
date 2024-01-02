@@ -45,4 +45,4 @@ COPY --from=ksops-builder /usr/local/bin/ksops .config/kustomize/plugin/viaduct.
 ########################
 # Install Helm Secrets #
 ########################
-RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION}
+RUN /usr/local/bin/helm plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION}
