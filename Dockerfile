@@ -1,9 +1,9 @@
-FROM viaductoss/ksops:v4.3.0 as ksops-builder
+FROM viaductoss/ksops:v4.5.1 as ksops-builder
 
-FROM quay.io/argoproj/argocd:v3.0.0
+FROM quay.io/argoproj/argocd:v3.4.4
 
-ARG SOPS_VERSION="v3.8.1"
-ARG HELM_SECRETS_VERSION="4.5.1"
+ARG SOPS_VERSION="v3.13.2"
+ARG HELM_SECRETS_VERSION="4.7.7"
 
 ENV HELM_SECRETS_BACKEND="sops" \
     HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/" \
